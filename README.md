@@ -1,5 +1,10 @@
 # LH-pythonmeteo
+avec FastAPI
 
-# Instalation
- bash
-python -m venv .venv
+## Instalation
+'' bash
+py -m venv .venv ''
+
+Activer l'environment virtuel
+'' bash
+py source .venv/Scripts/activate''
