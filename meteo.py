@@ -3,7 +3,7 @@ import requests
 API_KEY = "76e50ba2c3e0c31cfda9edaf2f7f833f"
 
 def get_meteo(ville):
-    url = f"http://api.openweathermap.org/data/2.5/weather?q=Paris,FR&appid=76e50ba2c3e0c31cfda9edaf2f7f833f&units=metric&lang=fr"
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={ville},FR&appid=76e50ba2c3e0c31cfda9edaf2f7f833f&units=metric&lang=fr"
     response = requests.get(url)
 
     if response.status_code == 200:

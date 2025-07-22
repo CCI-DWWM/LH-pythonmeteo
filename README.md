@@ -26,4 +26,4 @@ fastapi dev main.py
 ````bash
 py app.py
 ````
-essayer 41000 et vous aurez peut-être la meteo (api ne retourne pas toujours (erreur 401)
+essayer un code postal et vous aurez peut-être la meteo (api ne retourne pas toujours (erreur 401)
