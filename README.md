@@ -21,3 +21,9 @@ pip install -r requirements.txt
 ````bash
 fastapi dev main.py
 ````
+
+## La meteo
+````bash
+py app.py
+````
+essayer 41000 et vous aurez peut-être la meteo (api ne retourne pas toujours (erreur 401)

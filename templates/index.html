@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Météo par Code Postal</title>
+</head>
+<body>
+    <h1>Météo par Code Postal</h1>
+    <form method="POST">
+        <input type="text" name="cp" placeholder="Ex: 75000" required>
+        <button type="submit">Chercher</button>
+    </form>
+
+    {% if ville %}
+        <h2>Ville : {{ ville }}</h2>
+        <h3>Météo : {{ meteo }}</h3>
+    {% endif %}
+</body>
+</html>
