@@ -1,9 +1,12 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-API_KEY = "76e50ba2c3e0c31cfda9edaf2f7f833f"
+load_dotenv()  # Charge les variables d'environnement depuis le fichier .env
 
 def get_meteo(ville):
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={ville},FR&appid=76e50ba2c3e0c31cfda9edaf2f7f833f&units=metric&lang=fr"
+    api_key = os.getenv("OPENWEATHER_API_KEY")
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={ville},FR&appid={api_key}&units=metric&lang=fr"
     response = requests.get(url)
 
     if response.status_code == 200:

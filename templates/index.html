@@ -1,19 +1,230 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Météo par Code Postal</title>
+  <meta charset="UTF-8" />
+  <title>Météo France – Recherchez par Code Postal</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --accent: #61af54;
+      --background: #f9fafb;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--primary);
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #4b5563;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .mascotte {
+      margin-bottom: 30px;
+      max-width: 150px;
+    }
+
+    form {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    input[type="text"] {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .result {
+      margin-top: 40px;
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .emoji img {
+      max-height: 100px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+
+    .result h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .result h3 {
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .result ul {
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.6;
+      padding-left: 0;
+      list-style: none;
+      max-width: 350px;
+      margin: 0 auto;
+    }
+
+    .result ul li {
+      margin-bottom: 8px;
+    }
+
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--accent);
+      color: white;
+      padding: 15px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Météo par Code Postal</h1>
-    <form method="POST">
-        <input type="text" name="cp" placeholder="Ex: 75000" required>
-        <button type="submit">Chercher</button>
-    </form>
+  <h1>Météo France</h1>
+  <p class="subtitle">Obtenez la météo en temps réel selon votre code postal</p>
 
-    {% if ville %}
-        <h2>Ville : {{ ville }}</h2>
-        <h3>Météo : {{ meteo }}</h3>
-    {% endif %}
+  <img src="https://media.tenor.com/5mXsllvwqsMAAAAM/toobo-bonobo.gif" alt="Bonobo mascotte" class="mascotte" />
+
+  <form method="POST">
+    <input type="text" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
+    <button type="submit">Voir la météo</button>
+  </form>
+
+  {% if ville %}
+  <div class="result">
+    <div class="emoji">
+      {% if "soleil" in meteo.lower() %}
+        ☀️
+        <img src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif">
+      {% elif "pluie" in meteo.lower() %}
+        🌧️
+        <img src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif">
+      {% elif "nuage" in meteo.lower() %}
+        ⛅
+        <img src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp">
+      {% elif "neige" in meteo.lower() %}
+        ❄️
+        <img src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif">
+      {% elif "orage" in meteo.lower() %}
+        🌩️
+        <img src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif">
+      {% else %}
+        <img src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
+      {% endif %}
+    </div>
+    <h2>Ville : {{ ville }}</h2>
+    <h3>Météo : {{ meteo }}</h3>
+  </div>
+
+    <div class="popup" id="popup">
+    <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
+    <span>Météo chargée avec succès !</span>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const popup = document.getElementById("popup");
+      if (popup) {
+        popup.classList.add("show");
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 5000);
+      }
+    });
+  </script>
+  {% endif %}
 </body>
 </html>
