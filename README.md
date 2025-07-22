@@ -2,11 +2,12 @@
 avec FastAPI
 
 ## Instalation
+Creation de l'environement virtuel
  ```bash
 py -m venv .venv
 ```
 
-Activer l'environment virtuel
+Activer l'environement virtuel
 ```bash
 py source .venv/Scripts/activate
 ```
