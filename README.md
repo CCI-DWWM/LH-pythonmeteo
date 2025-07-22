@@ -16,3 +16,8 @@ Installation des librairies
 ````bash
 pip install -r requirements.txt
 ````
+
+## Execution du serveur
+````bash
+fastapi dev main.py
+````
