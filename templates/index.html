@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Météo France – Recherchez par Code Postal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
       --primary: #1e3a8a;
@@ -14,10 +15,11 @@
       --radius: 12px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    body.dark {
+      --background: #111827;
+      --card-bg: #1f2937;
+      --text: #f9fafb;
+      --primary: #60a5fa;
     }
 
     body {
@@ -25,40 +27,28 @@
       background-color: var(--background);
       color: var(--text);
       min-height: 100vh;
+      margin: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: var(--primary);
-      text-align: center;
+    /* Conteneur central : flex avec formulaire à gauche, météo à droite */
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      width: 100%;
+      max-width: 900px;
+      min-height: 80vh;
+      box-sizing: border-box;
     }
 
-    .subtitle {
-      font-size: 1.2rem;
-      color: #4b5563;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-
-    .mascotte {
-      margin-bottom: 20px;
-      max-width: 150px;
-      border-radius: 25%;
-      box-shadow: var(--shadow);
-      transition: transform var(--transition);
-    }
-    .mascotte:hover {
-      transform: scale(1.05);
-    }
-
-
-    form {
+    /* Formulaire à gauche */
+    form.form-left {
       background-color: var(--card-bg);
       padding: 30px;
       border-radius: var(--radius);
@@ -66,70 +56,151 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      width: 100%;
-      max-width: 420px;
+      width: 380px;
+      box-sizing: border-box;
     }
 
-    input[type="text"] {
-      padding: 12px 16px;
-      font-size: 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: var(--radius);
-      transition: border-color 0.2s;
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--accent);
-      outline: none;
-    }
-
-    button {
-      background-color: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 14px;
-      font-size: 1rem;
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #1d4ed8;
-    }
-
-    .result {
-      margin-top: 40px;
+    /* Bloc météo à droite */
+    .result-right {
       background-color: var(--card-bg);
       padding: 30px;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      max-width: 420px;
-      width: 100%;
+      width: 420px;
       text-align: center;
-      animation: fadeIn 0.6s ease;
+      box-sizing: border-box;
     }
 
-  .emoji img {
-    max-height: 120px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-  }
+    /* Responsive pour petits écrans */
+    @media (max-width: 900px) {
+      .main-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      form.form-left,
+      .result-right {
+        width: 90%;
+        max-width: 420px;
+      }
+    }
 
-    .result h2 {
+    /* Header */
+    .header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header img {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: 80px auto 30px;
+      font-size: 1.2rem;
+      color: var(--text);
+      max-width: 700px;
+    }
+
+    /* Bouton mode sombre */
+    .toggle-theme {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+    }
+
+    .toggle-theme:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Input formulaire */
+    input[type="number"] {
+      padding: 14px 18px;
+      font-size: 1rem;
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      width: 100%;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+      outline: none;
+    }
+
+    /* Bouton envoyer */
+    button[type="submit"] {
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #0284c7, #0ea5e9);
+      transform: scale(1.03);
+    }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .spinner img {
+      height: 60px;
+    }
+
+    /* Résultat météo */
+    .emoji img {
+      max-height: 120px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .result-right h2 {
       font-size: 1.4rem;
       color: var(--primary);
       margin-bottom: 8px;
     }
 
-    .result h3 {
+    .result-right h3 {
       font-weight: normal;
       color: var(--text);
       margin-bottom: 20px;
     }
 
-    .result ul {
+    .result-right ul {
       text-align: left;
       font-size: 1rem;
       line-height: 1.6;
@@ -139,23 +210,24 @@
       margin: 0 auto;
     }
 
-    .result ul li {
+    .result-right ul li {
       margin-bottom: 8px;
     }
 
-    .popup {
+    /* Popup agrandi */
+ .popup {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       background-color: var(--accent);
       color: white;
-      padding: 15px 20px;
-      border-radius: var(--radius);
+      padding: 20px;
+      border-radius: 20px;
       box-shadow: var(--shadow);
-      font-size: 1rem;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 16px;
       opacity: 0;
       transform: translateY(20px);
       pointer-events: none;
@@ -163,69 +235,19 @@
       z-index: 1000;
     }
 
-  .popup.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
+    .popup.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 20px;
-}
+    .popup img {
+      width: 120px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
 
-.header h1 {
-  font-size: 2.5rem;
-  color: var(--primary);
-  margin: 0;
-}
-
-form {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 420px;
-  animation: fadeIn 0.6s ease;
-}
-
-input[type="number"] {
-  padding: 14px 18px;
-  font-size: 1rem;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input[type="number"]:focus {
-  border-color: #0ea5e9;
-  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
-  outline: none;
-}
-
-button {
-  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
-  color: white;
-  border: none;
-  padding: 14px;
-  font-size: 1rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-button:hover {
-  background: linear-gradient(90deg, #0284c7, #0ea5e9);
-  transform: scale(1.03);
-}
-
-
+    /* Animation fadeIn */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -240,71 +262,85 @@ button:hover {
 </head>
 <body>
 
-<div class="header">
-  <img src="https://media.tenor.com/5mXsllvwqsMAAAAM/toobo-bonobo.gif" alt="Bonobo mascotte" class="mascotte" />
-  <div>
+  <div class="header">
+    <img src="https://media.tenor.com/5mXsllvwqsMAAAAM/toobo-bonobo.gif" alt="Bonobo mascotte" />
     <h1>Météo France</h1>
-    <p class="subtitle">Obtenez la météo en temps réel selon votre code postal</p>
-  </div>
-</div>
-
-
-  <form method="POST">
-    <input type="number" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
-    <button type="submit">Voir la météo</button>
-  </form>
-
-{% if ville %}
-  <div class="result">
-    <div class="emoji">
-      {% if "soleil" in description.lower() %}
-        <img alt="soleil" src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif">
-      {% elif "pluie" in description.lower() %}
-        <img alt="pluie" src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif">
-      {% elif "nuage" in description.lower() %}
-        <img alt="nuage" src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp">
-      {% elif "neige" in description.lower() %}
-        <img alt="neige" src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif">
-      {% elif "orage" in description.lower() %}
-        <img alt="orage" src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif">
-      {% elif "ciel" in description.lower() %}
-        <img alt="cieled" src="https://media.tenor.com/Utw16cw4oZYAAAAM/cieled.gif">
-      {% elif "disponible" in description.lower() or "trouvée" in description.lower() %}
-        <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
-      {% else %}
-        <img alt="meteo" src="https://media.tenor.com/835YCl4Cvx0AAAAM/sml-brooklyn-guy.gif">
-      {% endif %}
-    </div>
-
-    <h2>Ville : {{ ville }}</h2>
-    <h3>Météo actuelle</h3>
-
-    <ul>
-      <li><strong>Description :</strong> {{ description }}</li>
-      <li><strong>Température :</strong> {{ temperature }}°C</li>
-      <li><strong>Min :</strong> {{ temp_min }}°C</li>
-      <li><strong>Max :</strong> {{ temp_max }}°C</li>
-      <li><strong>Humidité :</strong> {{ humidite }}%</li>
-    </ul>
   </div>
 
-  <div class="popup" id="popup">
-    <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
+  <button class="toggle-theme" onclick="toggleTheme()">🌗 Mode sombre</button>
+
+  <p class="subtitle">Obtenez la météo en temps réel selon votre code postal</p>
+
+  <div class="main-container">
+
+    <form method="POST" onsubmit="showSpinner()" class="form-left">
+      <input type="number" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
+      <button type="submit">Voir la météo</button>
+      <div class="spinner" id="spinner">
+        <img src="https://media.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Chargement..." />
+      </div>
+    </form>
+
+    {% if ville %}
+      <div class="result-right">
+        <div class="emoji">
+          {% if "soleil" in description.lower() %}
+            <img alt="soleil" src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif" />
+          {% elif "pluie" in description.lower() %}
+            <img alt="pluie" src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif" />
+          {% elif "nuage" in description.lower() %}
+            <img alt="nuage" src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp" />
+          {% elif "neige" in description.lower() %}
+            <img alt="neige" src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif" />
+          {% elif "orage" in description.lower() %}
+            <img alt="orage" src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif" />
+          {% elif "ciel" in description.lower() %}
+            <img alt="cieled" src="https://media.tenor.com/Utw16cw4oZYAAAAM/cieled.gif" />
+          {% elif "disponible" in description.lower() or "trouvée" in description.lower() %}
+            <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif" />
+          {% else %}
+            <img alt="meteo" src="https://media.tenor.com/835YCl4Cvx0AAAAM/sml-brooklyn-guy.gif" />
+          {% endif %}
+        </div>
+
+        <h2>Ville : {{ ville }}</h2>
+        <h3>Météo actuelle</h3>
+        <ul>
+          <li><strong>Description :</strong> {{ description }}</li>
+          <li><strong>Température :</strong> {{ temperature }}°C</li>
+          <li><strong>Min :</strong> {{ temp_min }}°C</li>
+          <li><strong>Max :</strong> {{ temp_max }}°C</li>
+          <li><strong>Humidité :</strong> {{ humidite }}%</li>
+        </ul>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="popup show" id="popup">
+    <img src="https://media.tenor.com/ouX0jmFS0bMAAAAM/bert-kreischer-dance.gif" alt="popup" />
     <span>Météo chargée avec succès !</span>
   </div>
 
   <script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+
+    function showSpinner() {
+      const spinner = document.getElementById("spinner");
+      if (spinner) spinner.style.display = "block";
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       const popup = document.getElementById("popup");
       if (popup) {
-        popup.classList.add("show");
         setTimeout(() => {
           popup.classList.remove("show");
-        }, 1500);
+        }, 3000);
       }
     });
   </script>
-{% endif %}
 
 </body>
 </html>
