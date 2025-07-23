@@ -11,7 +11,7 @@ cur.execute("DROP TABLE IF EXISTS villes")
 # On crée une table avec code postal et nom_commune
 cur.execute("CREATE TABLE villes (cp TEXT, nom_commune TEXT)")
 
-# Lecture du fichier CSV;
+# Lecture du fichier sql;
 with open("019HexaSmal.sql", newline='', encoding='UTF-8') as fichier:
     reader = csv.DictReader(fichier, delimiter=';')
 
