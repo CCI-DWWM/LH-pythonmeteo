@@ -21,13 +21,27 @@ pip install -r requirements.txt
 ````bash
 fastapi dev main.py
 ````
+----------
 
-## La meteo
-Pour accéder au service meteo par code postal :
+## 🌦️ Bienvenue sur La Météo par Code Postal !
+
+
+Envie de savoir s’il fait beau chez vous… ou s’il est temps de sortir le parapluie ?
+Notre service météo ultra simple vous permet de connaître la météo en temps réel, juste en entrant votre code postal.
+
+🚀 Pour commencer :
+
 ````bash
 py app.py
 ````
-Rentrer un code postal et vous aurez la chance voir qu'il pleut chez vous.
+🧭 Ensuite :
+Tapez votre code postal préféré :
 ````bash
 41000
 ````
+Et découvrez avec surprise (ou résignation 😅) qu’il pleut peut-être chez vous !
+
+⚠️ Petit disclaimer :
+
+Nous faisons de notre mieux pour vous offrir des prévisions fiables, mais certaines villes peuvent être indisponibles ou capricieuses.
+On décline toute responsabilité si vous vous retrouvez sous la pluie sans parapluie.
