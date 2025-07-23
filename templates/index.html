@@ -46,16 +46,16 @@
     }
 
 
-.mascotte {
-  margin-bottom: 20px;
-  max-width: 150px;
-  border-radius: 25%;
-  box-shadow: var(--shadow);
-  transition: transform var(--transition);
-}
-.mascotte:hover {
-  transform: scale(1.05);
-}
+    .mascotte {
+      margin-bottom: 20px;
+      max-width: 150px;
+      border-radius: 25%;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition);
+    }
+    .mascotte:hover {
+      transform: scale(1.05);
+    }
 
 
     form {
@@ -182,6 +182,49 @@
   margin: 0;
 }
 
+form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.6s ease;
+}
+
+input[type="number"] {
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+  outline: none;
+}
+
+button {
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #0284c7, #0ea5e9);
+  transform: scale(1.03);
+}
+
 
     @keyframes fadeIn {
       from {
@@ -207,42 +250,48 @@
 
 
   <form method="POST">
-    <input type="text" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
+    <input type="number" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
     <button type="submit">Voir la météo</button>
   </form>
 
-  {% if ville %}
+{% if ville %}
   <div class="result">
     <div class="emoji">
-      {% if "soleil" in meteo.lower() %}
+      {% if "soleil" in description.lower() %}
         <img alt="soleil" src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif">
-      {% elif "pluie" in meteo.lower() %}
+      {% elif "pluie" in description.lower() %}
         <img alt="pluie" src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif">
-      {% elif "nuage" in meteo.lower() %}
+      {% elif "nuage" in description.lower() %}
         <img alt="nuage" src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp">
-      {% elif "neige" in meteo.lower() %}
+      {% elif "neige" in description.lower() %}
         <img alt="neige" src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif">
-      {% elif "orage" in meteo.lower() %}
+      {% elif "orage" in description.lower() %}
         <img alt="orage" src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif">
-      {% elif "ciel" in meteo.lower() %}
+      {% elif "ciel" in description.lower() %}
         <img alt="cieled" src="https://media.tenor.com/Utw16cw4oZYAAAAM/cieled.gif">
-      {% elif "disponible" in meteo.lower() %}
-        <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
-      {% elif "trouvé" in meteo.lower() %}
+      {% elif "disponible" in description.lower() or "trouvée" in description.lower() %}
         <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
       {% else %}
         <img alt="meteo" src="https://media.tenor.com/835YCl4Cvx0AAAAM/sml-brooklyn-guy.gif">
       {% endif %}
     </div>
+
     <h2>Ville : {{ ville }}</h2>
-    <h3>Météo : {{ meteo }}</h3>
+    <h3>Météo actuelle</h3>
+
+    <ul>
+      <li><strong>Description :</strong> {{ description }}</li>
+      <li><strong>Température :</strong> {{ temperature }}°C</li>
+      <li><strong>Min :</strong> {{ temp_min }}°C</li>
+      <li><strong>Max :</strong> {{ temp_max }}°C</li>
+      <li><strong>Humidité :</strong> {{ humidite }}%</li>
+    </ul>
   </div>
 
-    <div class="popup" id="popup">
-      <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
-      <span>Météo chargée avec succès !</span>
-    </div>
-
+  <div class="popup" id="popup">
+    <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
+    <span>Météo chargée avec succès !</span>
+  </div>
 
   <script>
     window.addEventListener("DOMContentLoaded", () => {
@@ -255,6 +304,7 @@
       }
     });
   </script>
-  {% endif %}
+{% endif %}
+
 </body>
 </html>

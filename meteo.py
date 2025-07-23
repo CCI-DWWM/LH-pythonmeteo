@@ -12,12 +12,16 @@ def get_meteo(ville):
     if response.status_code == 200:
         data = response.json()
         try:
-            description = data['weather'][0]['description']
-            temperature = data['main']['temp']
-            return f"{ville.title()} : {description}, {temperature}°C"
+            return {
+                "description": data['weather'][0]['description'],
+                "temperature": data['main']['temp'],
+                "temp_min": data['main']['temp_min'],
+                "temp_max": data['main']['temp_max'],
+                "humidite": data['main']['humidity']
+            }
         except (KeyError, IndexError):
-            return "Données météo incomplètes"
+            return None
     elif response.status_code == 404:
-        return "Ville non trouvée"
+        return None
     else:
-        return f"Erreur {response.status_code} : Météo non disponible"
+        return None
