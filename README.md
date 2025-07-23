@@ -23,7 +23,11 @@ fastapi dev main.py
 ````
 
 ## La meteo
+Pour accéder au service meteo par code postal :
 ````bash
 py app.py
 ````
-essayer un code postal et vous aurez peut-être la meteo (api ne retourne pas toujours (erreur 401)
+Rentrer un code postal et vous aurez la chance voir qu'il pleut chez vous.
+````bash
+41000
+````
