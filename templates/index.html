@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Météo France – Recherchez par Code Postal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
       --primary: #1e3a8a;
@@ -33,55 +33,7 @@
       align-items: center;
       padding: 40px 20px;
       transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Conteneur central : flex avec formulaire à gauche, météo à droite */
-    .main-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
-      width: 100%;
-      max-width: 900px;
-      min-height: 80vh;
-      box-sizing: border-box;
-    }
-
-    /* Formulaire à gauche */
-    form.form-left {
-      background-color: var(--card-bg);
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 380px;
-      box-sizing: border-box;
-    }
-
-    /* Bloc météo à droite */
-    .result-right {
-      background-color: var(--card-bg);
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      width: 420px;
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    /* Responsive pour petits écrans */
-    @media (max-width: 900px) {
-      .main-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      form.form-left,
-      .result-right {
-        width: 90%;
-        max-width: 420px;
-      }
+      position: relative;
     }
 
     /* Header */
@@ -134,6 +86,39 @@
       background-color: #1d4ed8;
     }
 
+    /* Conteneur principal : flex horizontal */
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      width: 100%;
+      max-width: 900px;
+      min-height: 80vh;
+      box-sizing: border-box;
+    }
+
+    /* Colonne gauche: formulaire + pub */
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 380px;
+      box-sizing: border-box;
+    }
+
+    /* Formulaire */
+    form.form-left {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-sizing: border-box;
+    }
+
     /* Input formulaire */
     input[type="number"] {
       padding: 14px 18px;
@@ -180,7 +165,44 @@
       height: 60px;
     }
 
-    /* Résultat météo */
+    /* Bloc pub */
+    .ad-block {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .ad-block h3 {
+      margin-top: 0;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .ad-block img {
+      max-width: 100%;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .ad-block img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Bloc météo */
+    .result-right {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 420px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    /* Emoji météo */
     .emoji img {
       max-height: 120px;
       margin-bottom: 20px;
@@ -215,7 +237,7 @@
     }
 
     /* Popup agrandi */
- .popup {
+    .popup {
       position: fixed;
       bottom: 30px;
       right: 30px;
@@ -233,6 +255,7 @@
       pointer-events: none;
       transition: all 0.5s ease;
       z-index: 1000;
+      max-width: 320px;
     }
 
     .popup.show {
@@ -258,6 +281,19 @@
         transform: translateY(0);
       }
     }
+
+    /* Responsive pour petits écrans */
+    @media (max-width: 900px) {
+      .main-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .left-column,
+      .result-right {
+        width: 90%;
+        max-width: 420px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -273,15 +309,17 @@
 
   <div class="main-container">
 
-    <form method="POST" onsubmit="showSpinner()" class="form-left">
-      <input type="number" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
-      <button type="submit">Voir la météo</button>
-      <div class="spinner" id="spinner">
-        <img src="https://media.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Chargement..." />
-      </div>
-    </form>
+    <div class="left-column">
+      <form method="POST" onsubmit="showSpinner()" class="form-left">
+        <input type="number" name="cp" placeholder="Entrez votre code postal (ex: 41000)" required />
+        <button type="submit">Voir la météo</button>
+        <div class="spinner" id="spinner">
+          <img src="https://media.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" alt="Chargement..." />
+        </div>
+      </form>
+    </div>
 
-    {% if ville %}
+        {% if ville %}
       <div class="result-right">
         <div class="emoji">
           {% if "soleil" in description.lower() %}
@@ -303,7 +341,7 @@
           {% endif %}
         </div>
 
-        <h2>Ville : {{ ville }}</h2>
+                <h2>Ville : {{ ville }}</h2>
         <h3>Météo actuelle</h3>
         <ul>
           <li><strong>Description :</strong> {{ description }}</li>
@@ -323,16 +361,25 @@
   </div>
 
   <script>
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-    }
-
     function showSpinner() {
-      const spinner = document.getElementById("spinner");
-      if (spinner) spinner.style.display = "block";
+      const spinner = document.getElementById('spinner');
+      spinner.style.display = 'block';
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
+    // Gestion du mode sombre
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    // Chargement du thème enregistré
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+      }
+    });
+
+        window.addEventListener("DOMContentLoaded", () => {
       const popup = document.getElementById("popup");
       if (popup) {
         setTimeout(() => {
@@ -341,6 +388,5 @@
       }
     });
   </script>
-
 </body>
 </html>
