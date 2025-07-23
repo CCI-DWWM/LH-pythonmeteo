@@ -12,7 +12,7 @@ cur.execute("DROP TABLE IF EXISTS villes")
 cur.execute("CREATE TABLE villes (cp TEXT, nom_commune TEXT)")
 
 # Lecture du fichier CSV;
-with open("019HexaSmal.csv", newline='', encoding='latin-1') as fichier:
+with open("019HexaSmal.sql", newline='', encoding='UTF-8') as fichier:
     reader = csv.DictReader(fichier, delimiter=';')
 
     for ligne in reader:
