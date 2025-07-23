@@ -154,11 +154,12 @@
       z-index: 1000;
     }
 
-    .popup.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
+  .popup.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
 
     @keyframes fadeIn {
       from {
@@ -187,22 +188,23 @@
   <div class="result">
     <div class="emoji">
       {% if "soleil" in meteo.lower() %}
-        ☀️
-        <img src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif">
+        <img alt="soleil" src="https://media.tenor.com/y75bDjubWroAAAAM/meme-baby.gif">
       {% elif "pluie" in meteo.lower() %}
-        🌧️
-        <img src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif">
+        <img alt="pluie" src="https://media.tenor.com/qtMbov2fM-QAAAAM/sad-rain.gif">
       {% elif "nuage" in meteo.lower() %}
-        ⛅
-        <img src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp">
+        <img alt="nuage" src="https://media.tenor.com/3yHrM1LD8hwAAAAm/%D1%81%D0%BE%D0%BB%D0%BD%D1%8B%D1%88%D0%BA%D0%BE-%D1%83%D0%BB%D1%8B%D0%B1%D0%BA%D0%B0.webp">
       {% elif "neige" in meteo.lower() %}
-        ❄️
-        <img src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif">
+        <img alt="neige" src="https://media.tenor.com/JT_cc0_H7mUAAAAM/snow-day.gif">
       {% elif "orage" in meteo.lower() %}
-        🌩️
-        <img src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif">
+        <img alt="orage" src="https://media.tenor.com/ppNCvD5sbp4AAAAM/elmo-thunder.gif">
+      {% elif "ciel" in meteo.lower() %}
+        <img alt="cieled" src="https://media.tenor.com/Utw16cw4oZYAAAAM/cieled.gif">
+      {% elif "disponible" in meteo.lower() %}
+        <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
+      {% elif "trouvé" in meteo.lower() %}
+        <img alt="pas_disponible" src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
       {% else %}
-        <img src="https://media.tenor.com/tjDz0E9vkagAAAAM/news-report-reporter.gif">
+        <img alt="meteo" src="https://media.tenor.com/835YCl4Cvx0AAAAM/sml-brooklyn-guy.gif">
       {% endif %}
     </div>
     <h2>Ville : {{ ville }}</h2>
@@ -210,9 +212,10 @@
   </div>
 
     <div class="popup" id="popup">
-    <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
-    <span>Météo chargée avec succès !</span>
-  </div>
+      <img src="https://media.tenor.com/NceUr_Tv-70AAAAM/awkward-shocked.gif" alt="popup" width="50" />
+      <span>Météo chargée avec succès !</span>
+    </div>
+
 
   <script>
     window.addEventListener("DOMContentLoaded", () => {
@@ -221,7 +224,7 @@
         popup.classList.add("show");
         setTimeout(() => {
           popup.classList.remove("show");
-        }, 5000);
+        }, 1500);
       }
     });
   </script>

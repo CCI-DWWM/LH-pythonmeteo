@@ -1,4 +1,3 @@
-# modele.py
 import sqlite3
 
 def get_nom_ville(cp):
