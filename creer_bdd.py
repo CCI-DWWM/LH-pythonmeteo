@@ -1,7 +1,7 @@
 import csv
 import sqlite3
 
-# Connexion à la base SQLite (fichier .sqlite)
+# Connexion à la base SQLite (fichier.SQLite)
 conn = sqlite3.connect('villes.sqlite')
 cur = conn.cursor()
 
